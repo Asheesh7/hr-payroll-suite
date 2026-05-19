@@ -1,15 +1,6 @@
 # HR Management & Payroll Suite
 ICT712 Group 5 — Enterprise Systems Development, Semester 1 2026
 
-## Team
-| Member | Responsibility | Branch |
-|--------|---------------|--------|
-| Member 1 | Authentication + Employee Management | feature/employees |
-| Member 2 | Leave Management | feature/leave |
-| Member 3 | Payroll + Tax System | feature/payroll |
-| Member 4 | Performance Reviews + Audit Logs | feature/reviews |
-| Member 5 | Celery, Redis, Email, Testing | feature/core |
-
 ## First-time setup (every member runs this once after cloning)
 
 1. Clone the repo:
@@ -48,3 +39,7 @@ Terminal 3 — Redis:
 - When your task is done, open a Pull Request to dev
 - Tag Ashish as reviewer on every PR
 - Pull from dev before starting any new work
+
+
+
+<!-- ERROR IN STEP 11 -->
