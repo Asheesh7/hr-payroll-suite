@@ -1,0 +1,21 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ title }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div style="color:red; font-size:13px;">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/employees/" class="btn btn-secondary" style="margin-left:10px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
