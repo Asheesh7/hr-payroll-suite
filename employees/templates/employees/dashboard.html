@@ -1,0 +1,13 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>You are logged in as: <strong>{{ user.get_role_display }}</strong></p>
+    <div style="margin-top: 20px;">
+        <a href="/employees/" class="btn btn-primary">View Employees</a>
+        <a href="/departments/" class="btn btn-secondary" style="margin-left: 10px;">View Departments</a>
+        <a href="/employees/profile/" class="btn btn-secondary" style="margin-left: 10px;">My Profile</a>
+    </div>
+</div>
+{% endblock %}

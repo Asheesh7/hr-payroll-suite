@@ -1,0 +1,40 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>Employees</h1>
+        <a href="/employees/create/" class="btn btn-primary">+ Add Employee</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.department }}</td>
+                <td>{{ employee.user.get_role_display }}</td>
+                <td>{{ employee.status }}</td>
+                <td>
+                    <a href="/employees/{{ employee.pk }}/" class="btn btn-secondary">View</a>
+                    <a href="/employees/{{ employee.pk }}/edit/" class="btn btn-primary">Edit</a>
+                    <a href="/employees/{{ employee.pk }}/deactivate/" class="btn btn-danger">Deactivate</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No employees found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

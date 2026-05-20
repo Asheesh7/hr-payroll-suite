@@ -1,0 +1,21 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ employee.first_name }} {{ employee.last_name }}</h1>
+    <table>
+        <tr><th>Email</th><td>{{ employee.email }}</td></tr>
+        <tr><th>Phone</th><td>{{ employee.phone }}</td></tr>
+        <tr><th>Department</th><td>{{ employee.department }}</td></tr>
+        <tr><th>Manager</th><td>{{ employee.manager }}</td></tr>
+        <tr><th>Role</th><td>{{ employee.user.get_role_display }}</td></tr>
+        <tr><th>Employment Type</th><td>{{ employee.get_employment_type_display }}</td></tr>
+        <tr><th>Hire Date</th><td>{{ employee.hire_date }}</td></tr>
+        <tr><th>Status</th><td>{{ employee.status }}</td></tr>
+    </table>
+    <div style="margin-top:20px;">
+        <a href="/employees/{{ employee.pk }}/edit/" class="btn btn-primary">Edit</a>
+        <a href="/employees/" class="btn btn-secondary" style="margin-left:10px;">Back</a>
+    </div>
+</div>
+{% endblock %}
