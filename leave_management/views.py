@@ -97,3 +97,31 @@ def leave_type_create(request):
     else:
         form = LeaveTypeForm()
     return render(request, "leave_management/type_form.html", {"form": form})
+
+# Update(completes CRUD) 
+
+@login_required
+def leave_request_edit(request, pk):
+    leave = get_object_or_404(LeaveRequest, pk=pk)
+    if leave.status != "Pending":
+        messages.warning(request, "Only pending requests can be edited.")
+        return redirect("leave_request_list")
+    if request.method == "POST":
+        form = LeaveRequestForm(request.POST, instance=leave)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Leave request updated.")
+            return redirect("leave_request_list")
+    else:
+        form = LeaveRequestForm(instance=leave)
+    return render(request, "leave_management/request_form.html", {"form": form})
+
+#  Delete 
+@login_required
+def leave_request_delete(request, pk):
+    leave = get_object_or_404(LeaveRequest, pk=pk)
+    if request.method == "POST":
+        leave.delete()
+        messages.success(request, "Leave request deleted.")
+        return redirect("leave_request_list")
+    return render(request, "leave_management/request_confirm_delete.html", {"leave": leave})

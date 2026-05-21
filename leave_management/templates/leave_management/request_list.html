@@ -26,13 +26,15 @@
         {% if req.status == "Pending" %}
           <a href="{% url 'leave_request_approve' req.pk %}">Approve</a> |
           <a href="{% url 'leave_request_reject' req.pk %}">Reject</a>
+          <a href="{% url 'leave_request_edit' req.pk %}">Edit</a> |
         {% else %}
           —
         {% endif %}
+        <a href="{% url 'leave_request_delete' req.pk %}">Delete</a>
       </td>
     </tr>
     {% empty %}
-    <tr><td colspan="6">No leave requests yet.</td></tr>
+    <tr><td colspan="6">There are no leave requests yet.</td></tr>
     {% endfor %}
   </table>
 </body>
