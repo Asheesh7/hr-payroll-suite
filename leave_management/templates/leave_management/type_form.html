@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>New Leave Type</title></head>
+<body>
+  <h1>Create Leave Type</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+  <a href="{% url 'leave_type_list' %}">Back to list</a>
+</body>
+</html>

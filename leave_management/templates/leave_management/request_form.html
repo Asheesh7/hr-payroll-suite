@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>New Leave Request</title></head>
+<body>
+  <h1>Submit Leave Request</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+  <a href="{% url 'leave_request_list' %}">Back to list</a>
+</body>
+</html>

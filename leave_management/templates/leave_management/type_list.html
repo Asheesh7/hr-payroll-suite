@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Leave Types</title></head>
+<body>
+  <h1>Leave Types</h1>
+  <a href="{% url 'leave_type_create' %}">+ New Leave Type</a>
+  <ul>
+    {% for t in types %}
+      <li>{{ t.name }} — accrual: {{ t.accrual_rate }} {% if t.is_paid %}(paid){% else %}(unpaid){% endif %}</li>
+    {% empty %}
+      <li>No leave types yet.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'leave_request_list' %}">Back to requests</a>
+</body>
+</html>
