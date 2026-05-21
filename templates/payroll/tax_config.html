@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Tax Configuration{% endblock %}
+{% block page_title %}Tax Brackets{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header-custom d-flex justify-content-between align-items-center">
+    <span>
+      <i class="bi bi-percent me-2 text-warning"></i>
+      Tax Bracket Configuration
+    </span>
+    <a href="{% url 'tax-config-create' %}" class="btn btn-primary btn-sm">
+      <i class="bi bi-plus-lg me-1"></i>Add Bracket
+    </a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Financial Year</th>
+          <th>Income Range</th>
+          <th>Tax Rate</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for config in configs %}
+        <tr>
+          <td class="text-muted">{{ forloop.counter }}</td>
+          <td>{{ config.financial_year }}</td>
+          <td>AUD {{ config.min_income }} — {{ config.max_income }}</td>
+          <td>
+            {% if config.tax_rate == 0 %}
+              <span class="badge bg-success px-3">{{ config.tax_rate }}% — Tax Free</span>
+            {% elif config.tax_rate <= 19 %}
+              <span class="badge bg-info text-dark px-3">{{ config.tax_rate }}%</span>
+            {% elif config.tax_rate <= 32.5 %}
+              <span class="badge bg-primary px-3">{{ config.tax_rate }}%</span>
+            {% elif config.tax_rate <= 37 %}
+              <span class="badge bg-warning text-dark px-3">{{ config.tax_rate }}%</span>
+            {% else %}
+              <span class="badge bg-danger px-3">{{ config.tax_rate }}%</span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            <div class="d-flex gap-1 justify-content-end">
+              <a href="{% url 'tax-config-update' config.pk %}"
+                 class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </a>
+              <a href="{% url 'tax-config-delete' config.pk %}"
+                 class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-5">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            No tax brackets configured.
+            <a href="{% url 'tax-config-create' %}">Add one now</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

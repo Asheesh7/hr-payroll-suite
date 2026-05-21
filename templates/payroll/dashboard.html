@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Payroll Dashboard{% endblock %}
+{% block page_title %}Payroll Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end gap-2 mb-4">
+  <a href="{% url 'tax-config' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-sliders me-1"></i>Tax Config
+  </a>
+  <a href="{% url 'payroll-run' %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-play-circle me-1"></i>Run Payroll
+  </a>
+</div>
+
+<!-- Recent Payroll Runs -->
+<div class="card mb-4">
+  <div class="card-header-custom d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-calendar3 me-2 text-primary"></i>Recent Payroll Runs</span>
+    <span class="badge bg-secondary">{{ runs|length }} runs</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Pay Period</th>
+          <th>Pay Date</th>
+          <th>Total Net Pay</th>
+          <th>Processed By</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for run in runs %}
+        <tr>
+          <td>
+            <i class="bi bi-calendar-range me-1 text-muted"></i>
+            {{ run.pay_start }} — {{ run.pay_end }}
+          </td>
+          <td>{{ run.pay_date }}</td>
+          <td><span class="fw-semibold text-success">AUD {{ run.total_amount }}</span></td>
+          <td class="text-muted">
+            {{ run.processed_by.get_full_name|default:run.processed_by.username }}
+          </td>
+          <td class="text-end">
+            <div class="d-flex gap-1 justify-content-end">
+              <a href="{% url 'payslip-list' %}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-receipt me-1"></i>Payslips
+              </a>
+              <a href="{% url 'payroll-run-delete' run.pk %}"
+                 class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-5">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            No payroll runs yet.
+            <a href="{% url 'payroll-run' %}">Run payroll now</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Tax Brackets -->
+<div class="card">
+  <div class="card-header-custom d-flex justify-content-between align-items-center">
+    <span>
+      <i class="bi bi-percent me-2 text-warning"></i>
+      Current Tax Brackets
+    </span>
+    <a href="{% url 'tax-config' %}" class="btn btn-outline-secondary btn-sm">
+      Manage
+    </a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Income Range</th>
+          <th class="text-end">Tax Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for config in configs %}
+        <tr>
+          <td>AUD {{ config.min_income }} — {{ config.max_income }}</td>
+          <td class="text-end">
+            {% if config.tax_rate == 0 %}
+              <span class="badge bg-success">{{ config.tax_rate }}% — Tax Free</span>
+            {% elif config.tax_rate <= 19 %}
+              <span class="badge bg-info text-dark">{{ config.tax_rate }}%</span>
+            {% elif config.tax_rate <= 32.5 %}
+              <span class="badge bg-primary">{{ config.tax_rate }}%</span>
+            {% elif config.tax_rate <= 37 %}
+              <span class="badge bg-warning text-dark">{{ config.tax_rate }}%</span>
+            {% else %}
+              <span class="badge bg-danger">{{ config.tax_rate }}%</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="2" class="text-center text-muted py-3">
+            No tax brackets configured.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

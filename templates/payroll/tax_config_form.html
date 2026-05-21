@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} Tax Bracket{% endblock %}
+{% block page_title %}{{ action }} Tax Bracket{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-5">
+    <div class="card p-4">
+      <div class="mb-4">
+        <h5 class="fw-bold mb-1">{{ action }} Tax Bracket</h5>
+        <p class="text-muted small mb-0">
+          Define income range and applicable tax rate for a financial year.
+        </p>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Financial Year</label>
+          <input type="text" name="financial_year" class="form-control"
+            placeholder="e.g. 2025-26"
+            value="{{ config.financial_year|default:'' }}" required>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <label class="form-label fw-semibold small">Min Income (AUD)</label>
+            <input type="number" name="min_income" class="form-control"
+              step="0.01" min="0"
+              value="{{ config.min_income|default:'' }}" required>
+          </div>
+          <div class="col-6">
+            <label class="form-label fw-semibold small">Max Income (AUD)</label>
+            <input type="number" name="max_income" class="form-control"
+              step="0.01" min="0"
+              value="{{ config.max_income|default:'' }}" required>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-semibold small">Tax Rate (%)</label>
+          <div class="input-group">
+            <input type="number" name="tax_rate" class="form-control"
+              step="0.01" min="0" max="100"
+              value="{{ config.tax_rate|default:'' }}" required>
+            <span class="input-group-text">%</span>
+          </div>
+          <div class="form-text">Enter percentage e.g. 19 for 19%</div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <a href="{% url 'tax-config' %}" class="btn btn-outline-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-check-lg me-1"></i>{{ action }} Bracket
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
