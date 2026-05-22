@@ -98,8 +98,12 @@ def employee_deactivate(request, pk):
 
 @login_required
 def employee_profile(request):
-    employee = get_object_or_404(Employee, user=request.user)
-    return render(request, 'employees/profile.html', {'employee': employee})
+    try:
+        employee = Employee.objects.get(user=request.user)
+        return render(request, 'employees/profile.html', {'employee': employee})
+    except Employee.DoesNotExist:
+        messages.error(request, 'No employee profile found for your account. Please contact HR.')
+        return redirect('dashboard')
 
 
 # ─── Department Views ────────────────────────────────────────────────────────
@@ -138,3 +142,13 @@ def department_edit(request, pk):
     else:
         form = DepartmentForm(instance=department)
     return render(request, 'employees/department_form.html', {'form': form, 'title': 'Edit Department'})
+
+@login_required
+@permission_required('employees.delete_department', raise_exception=True)
+def department_delete(request, pk):
+    department = get_object_or_404(Department, pk=pk)
+    if request.method == 'POST':
+        department.delete()
+        messages.success(request, 'Department deleted successfully.')
+        return redirect('department_list')
+    return render(request, 'employees/department_confirm_delete.html', {'department': department})
