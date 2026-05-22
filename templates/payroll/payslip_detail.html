@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Payslip — {{ payslip.employee }}{% endblock %}
+{% block page_title %}Payslip Detail{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <!-- Header card -->
+    <div class="card mb-3 p-4">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h4 class="fw-bold mb-1">{{ payslip.employee }}</h4>
+          <span class="badge bg-primary mb-1">
+            {{ payslip.employee.user.get_role_display }}
+          </span>
+          <div class="text-muted small mt-1">
+            <i class="bi bi-building me-1"></i>
+            {{ payslip.employee.department|default:"No Department" }}
+          </div>
+        </div>
+        <a href="{% url 'payslip-list' %}" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-arrow-left me-1"></i>Back
+        </a>
+      </div>
+
+      <hr class="my-3">
+
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <div class="text-muted small mb-1">Pay Period</div>
+          <div class="fw-semibold">
+            {{ payslip.payroll_run.pay_start }} — {{ payslip.payroll_run.pay_end }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted small mb-1">Pay Date</div>
+          <div class="fw-semibold">{{ payslip.payroll_run.pay_date }}</div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted small mb-1">Processed By</div>
+          <div class="fw-semibold">
+            {{ payslip.payroll_run.processed_by.get_full_name|default:payslip.payroll_run.processed_by.username }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted small mb-1">Generated</div>
+          <div class="fw-semibold">{{ payslip.generated_at|date:"d M Y, H:i" }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pay breakdown card -->
+    <div class="card p-4">
+      <div class="fw-semibold mb-3" style="font-size:0.9rem; color:#374151;">
+        <i class="bi bi-cash-stack me-2 text-primary"></i>Pay Breakdown
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+        <span class="text-muted">Gross Pay</span>
+        <span class="fw-semibold">AUD {{ payslip.gross_pay }}</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+        <span class="text-muted">Tax Deducted</span>
+        <span class="text-danger">
+          {% if payslip.tax_amount > 0 %}
+            – AUD {{ payslip.tax_amount }}
+          {% else %}
+            AUD 0.00
+          {% endif %}
+        </span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+        <span class="text-muted">Other Deductions</span>
+        <span class="text-danger">
+          {% if payslip.deductions > 0 %}
+            – AUD {{ payslip.deductions }}
+          {% else %}
+            AUD 0.00
+          {% endif %}
+        </span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center pt-3 mt-1">
+        <span class="fw-bold fs-6">Net Pay</span>
+        <span class="fw-bold fs-4 text-success">AUD {{ payslip.net_pay }}</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

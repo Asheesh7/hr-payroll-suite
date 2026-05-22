@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Run Payroll{% endblock %}
+{% block page_title %}Run Payroll{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card p-4">
+      <div class="mb-4">
+        <h5 class="fw-bold mb-1">Process Monthly Payroll</h5>
+        <p class="text-muted small mb-0">
+          Generates payslips for all active employees based on their salary structure and applicable tax brackets.
+        </p>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="row g-3 mb-3">
+          <div class="col-sm-6">
+            <label class="form-label fw-semibold small">Pay Period Start</label>
+            <input type="date" name="pay_start" class="form-control" required>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label fw-semibold small">Pay Period End</label>
+            <input type="date" name="pay_end" class="form-control" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold small">Pay Date</label>
+            <input type="date" name="pay_date" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="alert alert-warning d-flex align-items-center py-2 mb-4 small">
+          <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+          This will generate payslips for all active employees. This action cannot be undone.
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <a href="{% url 'payroll-dashboard' %}" class="btn btn-outline-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary px-4"
+            onclick="return confirm('Run payroll for all active employees?')">
+            <i class="bi bi-play-circle me-1"></i>Run Payroll
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

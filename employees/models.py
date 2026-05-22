@@ -49,3 +49,19 @@ class Employee(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+class SalaryStructure(models.Model):
+    employee     = models.OneToOneField(
+                       Employee, on_delete=models.CASCADE,
+                       related_name='salary'
+                   )
+    basic_salary = models.DecimalField(max_digits=12, decimal_places=2)
+    allowances   = models.DecimalField(
+                       max_digits=12, decimal_places=2, default=0
+                   )
+
+    def gross_salary(self):
+        return self.basic_salary + self.allowances
+
+    def __str__(self):
+        return f'Salary — {self.employee}'
