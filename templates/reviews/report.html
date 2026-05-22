@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Performance Report{% endblock %}
+{% block page_title %}Performance Report{% endblock %}
+
+{% block content %}
+
+<div class="card mb-4">
+  <div class="card-header-custom">
+    Average Rating
+  </div>
+  <div class="card-body">
+    <h2 class="text-success">
+      {{ avg_rating.rating__avg|floatformat:2 }}
+    </h2>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header-custom">
+    Top Employees
+  </div>
+
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th>Employee</th>
+        <th>Rating</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for r in top %}
+      <tr>
+        <td>{{ r.employee }}</td>
+        <td>{{ r.rating }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

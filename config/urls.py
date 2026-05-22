@@ -10,4 +10,5 @@ urlpatterns = [
     path('leave/', include('leave_management.urls')),
     path('payroll/', include('payroll.urls')),
     path('reviews/', include('reviews.urls')),
+    path('core/', include('core.urls')),
 ]

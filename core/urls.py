@@ -1,2 +1,6 @@
 from django.urls import path
-urlpatterns = []
+from . import views
+
+urlpatterns = [
+    path('audit/', views.audit_report, name='audit_report'),
+]
