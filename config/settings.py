@@ -94,5 +94,8 @@ EMAIL_BACKEND = config(
     'EMAIL_BACKEND',
     default='django.core.mail.backends.console.EmailBackend'
 )
+
+DEFAULT_FROM_EMAIL = "admin@hrsystem.com"
+
 LOGIN_REDIRECT_URL = '/payroll/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
