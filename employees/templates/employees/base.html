@@ -39,6 +39,7 @@
         <a href="/employees/departments/">Departments</a>
         <a href="/employees/profile/">My Profile</a>
         <a href="/employees/logout/">Logout ({{ user.username }})</a>
+        <a href="{% url 'review_page' %}"><i class="bi bi-clipboard-check"></i>Reviews</a>
     </div>
 </nav>
 {% endif %}
