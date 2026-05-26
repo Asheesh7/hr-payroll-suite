@@ -148,7 +148,6 @@ def run_payroll(pay_start, pay_end, pay_date, processed_by):
             processed_by.username, payroll_run.pk, float(total)
         )
 
-    # ── Post-transaction: dispatch Celery email tasks ──────────────────────
     # This block runs OUTSIDE transaction.atomic() intentionally.
     # Emails are only sent after the database has committed successfully.
     # If email dispatch fails, the payroll run is NOT rolled back.
