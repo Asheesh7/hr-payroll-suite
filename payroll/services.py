@@ -22,7 +22,7 @@ def calculate_tax(gross_salary):
 
     Example:
         calculate_tax(Decimal('6500.00'))
-        # Matches bracket $45,001–$120,000 @ 32.5%
+        # Matches bracket $45,001-$120,000 @ 32.5%
         # Returns Decimal('2112.50')
     """
     # Query TaxConfig for the bracket that contains this salary
@@ -53,6 +53,11 @@ def run_payroll(pay_start, pay_end, pay_date, processed_by):
     guaranteeing that either ALL payslips are created and the PayrollRun
     total is updated, or NOTHING is saved if any error occurs mid-run.
 
+    After the transaction commits successfully, Celery email tasks are
+    dispatched asynchronously to notify each employee of their payslip.
+    Tasks are dispatched OUTSIDE the transaction to ensure emails only
+    send after a successful database commit.
+
     Args:
         pay_start (str|date): Start date of the pay period.
         pay_end   (str|date): End date of the pay period.
@@ -71,9 +76,12 @@ def run_payroll(pay_start, pay_end, pay_date, processed_by):
         status='active'
     ).select_related('salary')
 
-    # Collect payslip IDs to return for Celery task dispatch
-    # (Member 5 uses these to queue PDF generation after commit)
+    # Collect payslip IDs to return to the caller
     payslip_ids = []
+
+    # Store employee email details for post-commit Celery dispatch
+    # Populated inside the transaction, used outside it
+    employee_emails = []
 
     # Wrap the entire payroll run in an atomic transaction
     # If any operation fails, all changes are rolled back automatically
@@ -117,8 +125,15 @@ def run_payroll(pay_start, pay_end, pay_date, processed_by):
                 deductions=emp.salary.allowances
             )
 
-            # Track the payslip ID for post-commit Celery dispatch
+            # Track the payslip ID for the return value
             payslip_ids.append(payslip.pk)
+
+            # Store email details for Celery dispatch after commit
+            # Must be collected inside transaction while emp is loaded
+            employee_emails.append({
+                'email': emp.email,
+                'name':  emp.first_name,
+            })
 
             # Add net pay (gross minus tax) to the running total
             total += gross - tax
@@ -133,6 +148,22 @@ def run_payroll(pay_start, pay_end, pay_date, processed_by):
             processed_by.username, payroll_run.pk, float(total)
         )
 
-    # Return outside the transaction block
-    # Celery tasks should be dispatched here (after successful commit)
+    # This block runs OUTSIDE transaction.atomic() intentionally.
+    # Emails are only sent after the database has committed successfully.
+    # If email dispatch fails, the payroll run is NOT rolled back.
+    try:
+        from core.tasks import send_payslip_email
+        for emp_data in employee_emails:
+            send_payslip_email.delay(
+                emp_data['email'],
+                emp_data['name']
+            )
+        logger.info(
+            'CELERY | Action=PAYSLIP_EMAILS_QUEUED | Count=%d',
+            len(employee_emails)
+        )
+    except Exception as e:
+        # Log the error but do not raise — payroll run already succeeded
+        logger.error('CELERY | Email dispatch failed: %s', str(e))
+
     return payroll_run, payslip_ids
