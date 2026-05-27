@@ -1,0 +1,27 @@
+{% extends 'employees/base.html' %}
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>Leave Types</h1>
+        <a href="{% url 'leave_type_create' %}" class="btn btn-primary">+ New Leave Type</a>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Name</th><th>Accrual Rate</th><th>Paid</th></tr>
+        </thead>
+        <tbody>
+        {% for t in types %}
+            <tr>
+                <td>{{ t.name }}</td>
+                <td>{{ t.accrual_rate }}</td>
+                <td>{% if t.is_paid %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3" style="text-align:center;">No leave types yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'leave_request_list' %}" class="btn btn-secondary">Back to Requests</a>
+</div>
+{% endblock %}
