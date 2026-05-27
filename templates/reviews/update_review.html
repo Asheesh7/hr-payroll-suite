@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Update Review{% endblock %}
+{% block page_title %}Update Review{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+  <div class="card-header-custom">
+    Update Performance Review
+  </div>
+
+  <div class="card-body">
+
+    <form method="POST">
+
+      {% csrf_token %}
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+
+          <label class="form-label">Employee</label>
+
+          <select name="employee" class="form-select">
+
+            {% for emp in employees %}
+
+            <option value="{{ emp.id }}"
+              {% if emp.id == review.employee.id %}selected{% endif %}>
+              {{ emp }}
+            </option>
+
+            {% endfor %}
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">Rating</label>
+
+          <input type="number"
+                 name="rating"
+                 class="form-control"
+                 value="{{ review.rating }}"
+                 min="1"
+                 max="5">
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">Comments</label>
+
+          <input type="text"
+                 name="comments"
+                 class="form-control"
+                 value="{{ review.comments }}">
+
+        </div>
+
+      </div>
+
+      <div class="mt-3 text-end">
+
+        <button type="submit" class="btn btn-primary">
+          Update Review
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}
