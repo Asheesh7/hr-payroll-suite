@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head><title>New Leave Type</title></head>
-<body>
-  <h1>Create Leave Type</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
-  <a href="{% url 'leave_type_list' %}">Back to list</a>
-</body>
-</html>
+{% extends 'employees/base.html' %}
+{% block content %}
+<div class="card">
+    <h1>Create Leave Type</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="alert alert-error" style="margin-top:5px;">{{ field.errors|striptags }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'leave_type_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
