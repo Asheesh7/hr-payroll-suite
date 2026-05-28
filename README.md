@@ -5,7 +5,7 @@ An enterprise web application for managing HR records, leave requests, payroll p
 
 ## Features
 - **Employee Management** : employee records, departments, and user authentication
-- **Leave Management** —:request submission, manager approvals, atomic leave balance deduction
+- **Leave Management** :request submission, manager approvals, atomic leave balance deduction
 - **Payroll Processing** : salary structures, configurable tax brackets, payslip generation, email distribution
 - **Performance Reviews** : manager-driven ratings and feedback with reporting
 - **Role-Based Access Control (RBAC)** : four organisational roles (Employee, Line Manager, HR Officer, Payroll Administrator)
