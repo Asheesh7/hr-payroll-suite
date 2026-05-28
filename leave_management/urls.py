@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     # Leave requests
+    path("<int:pk>/", views.leave_request_detail, name="leave_request_detail"),
     path("", views.leave_request_list, name="leave_request_list"),
     path("create/", views.leave_request_create, name="leave_request_create"),
     path("<int:pk>/approve/", views.leave_request_approve, name="leave_request_approve"),

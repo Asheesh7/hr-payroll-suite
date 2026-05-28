@@ -125,3 +125,12 @@ def leave_request_delete(request, pk):
         messages.success(request, "Leave request deleted.")
         return redirect("leave_request_list")
     return render(request, "leave_management/request_confirm_delete.html", {"leave": leave})
+
+@login_required
+def leave_request_detail(request, pk):
+    leave = get_object_or_404(LeaveRequest, pk=pk)
+    approval_steps = leave.approval_steps.all()
+    return render(request, "leave_management/request_detail.html", {
+        "leave": leave,
+        "approval_steps": approval_steps,
+    })

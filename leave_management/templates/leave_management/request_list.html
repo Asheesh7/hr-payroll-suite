@@ -15,7 +15,7 @@
         <tbody>
         {% for req in requests %}
             <tr>
-                <td>{{ req.employee }}</td>
+                <td><a href="{% url 'leave_request_detail' req.pk %}">{{ req.employee }}</a></td>
                 <td>{{ req.leave_type }}</td>
                 <td>{{ req.start_date }}</td>
                 <td>{{ req.end_date }}</td>
