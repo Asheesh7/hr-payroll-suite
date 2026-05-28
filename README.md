@@ -4,14 +4,14 @@ ICT712 Group 5 - Enterprise Systems Development, Semester 1 2026
 An enterprise web application for managing HR records, leave requests, payroll processing, and performance reviews — built with Django 5.0, MySQL, Redis, and Celery.
 
 ## Features
-- **Employee Management** — employee records, departments, and user authentication
-- **Leave Management** — request submission, manager approvals, atomic leave balance deduction
-- **Payroll Processing** — salary structures, configurable tax brackets, payslip generation, email distribution
-- **Performance Reviews** — manager-driven ratings and feedback with reporting
-- **Role-Based Access Control (RBAC)** — four organisational roles (Employee, Line Manager, HR Officer, Payroll Administrator)
-- **Asynchronous Background Tasks** — email notifications powered by Celery and Redis
-- **Atomic Transactions** — data integrity guaranteed during concurrent operations
-- **System-Wide Audit Trail** — all user actions logged with timestamps
+- **Employee Management** : employee records, departments, and user authentication
+- **Leave Management** —:request submission, manager approvals, atomic leave balance deduction
+- **Payroll Processing** : salary structures, configurable tax brackets, payslip generation, email distribution
+- **Performance Reviews** : manager-driven ratings and feedback with reporting
+- **Role-Based Access Control (RBAC)** : four organisational roles (Employee, Line Manager, HR Officer, Payroll Administrator)
+- **Asynchronous Background Tasks** : email notifications powered by Celery and Redis
+- **Atomic Transactions** : data integrity guaranteed during concurrent operations
+- **System-Wide Audit Trail** : all user actions logged with timestamps
 
 ---
 
