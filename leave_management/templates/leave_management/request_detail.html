@@ -1,0 +1,38 @@
+{% extends 'employees/base.html' %}
+{% block content %}
+<div class="card">
+    <h1>Leave Request Details</h1>
+
+    <table>
+        <tr><th>Employee</th><td>{{ leave.employee }}</td></tr>
+        <tr><th>Leave Type</th><td>{{ leave.leave_type }}</td></tr>
+        <tr><th>Start Date</th><td>{{ leave.start_date }}</td></tr>
+        <tr><th>End Date</th><td>{{ leave.end_date }}</td></tr>
+        <tr><th>Status</th><td>{{ leave.status }}</td></tr>
+        <tr><th>Submitted On</th><td>{{ leave.created_at }}</td></tr>
+    </table>
+
+    <h2 style="margin-top:30px;">Approval History</h2>
+    <table>
+        <thead>
+            <tr><th>Step</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for step in approval_steps %}
+            <tr>
+                <td>Step {{ forloop.counter }}</td>
+                <td>{{ step.status }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="2" style="text-align:center;">No approval actions yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    {% if leave.status == "Pending" %}
+        <a href="{% url 'leave_request_edit' leave.pk %}" class="btn btn-secondary">Edit</a>
+    {% endif %}
+    <a href="{% url 'leave_request_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+{% endblock %}
