@@ -95,7 +95,7 @@ python manage.py create_groups
 
 Open three terminals (virtual environment active in all).
 
-### Terminal 1 — Redis Server
+### Terminal 1 - Redis Server
 
 **Windows:**
 
@@ -109,13 +109,13 @@ redis-server
 sudo service redis-server start
 ```
 
-### Terminal 2 — Celery Worker
+### Terminal 2 - Celery Worker
 
 ```bash
 celery -A config worker --loglevel=info
 ```
 
-### Terminal 3 — Django Server
+### Terminal 3 - Django Server
 
 ```bash
 python manage.py runserver
@@ -126,7 +126,7 @@ Then open: `http://127.0.0.1:8000/employees/login/`
 ---
 ## Authors
 
-**ICT712 Enterprise Systems Development — Group 5 (Melbourne Campus)**
+**ICT712 Enterprise Systems Development - Group 5 (Melbourne Campus)**
 
 - Ashish Prasai (61722) — Team Leader
 - Susmita Giri (63232)
